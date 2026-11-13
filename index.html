@@ -344,8 +344,7 @@
   <script>
     // Birthday date in YYYY-MM-DD format; countdown uses midnight at UTC+02:00.
     const DEFAULT_BIRTHDAY = "2026-11-14";
-    const TEST_COUNTDOWN_SECONDS = 3;
-    const testCountdownEndsAt = Date.now() + TEST_COUNTDOWN_SECONDS * 1000;
+    const birthdayAt = new Date(`${DEFAULT_BIRTHDAY}T00:00:00+02:00`).getTime();
     const fields = ["days", "hours", "minutes", "seconds"].map(id => document.getElementById(id));
     const labels = [...document.querySelectorAll(".label")];
     const letterOverlay = document.querySelector("#letter-overlay");
@@ -467,8 +466,8 @@
 
     function render() {
       if (countdownCompleted) return;
-      const remaining = testCountdownEndsAt - Date.now();
-      if (!Number.isFinite(testCountdownEndsAt)) return;
+      const remaining = birthdayAt - Date.now();
+      if (!Number.isFinite(birthdayAt)) return;
       if (remaining <= 0) {
         if (!countdownCompleted) finishCountdown();
         return;
