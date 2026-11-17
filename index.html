@@ -28,8 +28,19 @@
     .background-scene {
       position: fixed; z-index: -2; inset: -4%; pointer-events: none;
       background-size: cover; background-position: center; background-repeat: no-repeat;
-      opacity: 0; will-change: opacity, transform;
-      animation: constellation-fade 24s ease-in-out infinite;
+      opacity: 1; will-change: opacity, transform;
+      animation: none !important;
+    }
+    .kiss-pop {
+      position: fixed; z-index: 20; pointer-events: none; font-size: 2rem;
+      transform: translate(-50%, -50%); animation: kiss-fade 2s ease-out forwards;
+      filter: drop-shadow(0 2px 8px #170921aa);
+    }
+    @keyframes kiss-fade {
+      0% { opacity: 0; scale: .5; }
+      12% { opacity: 1; scale: 1.15; }
+      75% { opacity: 1; scale: 1; }
+      100% { opacity: 0; scale: .75; }
     }
     .background-scene:nth-child(1) {
       background-image: linear-gradient(#23103840, #23103840), url("./constellation%20background%201.jpg");
@@ -50,161 +61,10 @@
       34% { opacity: 0; transform: scale(1.02) translate3d(-.5%, .4%, 0); }
     }
     .celebration-layer {
-      position: fixed; inset: 0; z-index: 8; overflow: hidden; pointer-events: none;
-    }
-    .celebration-layer[hidden] { display: none; }
-    .kiss-pop {
-      position: fixed; z-index: 20; pointer-events: none; font-size: 2rem;
-      transform: translate(-50%, -50%); animation: kiss-fade 2s ease-out forwards;
-      filter: drop-shadow(0 2px 8px #170921aa);
-    }
-    @keyframes kiss-fade {
-      0% { opacity: 0; scale: .5; }
-      12% { opacity: 1; scale: 1.15; }
-      75% { opacity: 1; scale: 1; }
-      100% { opacity: 0; scale: .75; }
-    }
-    .balloon {
-      position: absolute; bottom: -18vh; left: var(--left); width: var(--size); height: calc(var(--size) * 1.28);
-      border-radius: 50% 50% 46% 46%; opacity: 0;
-      background: radial-gradient(ellipse at 32% 25%, #ffffffd9 0 5%, transparent 23%), var(--color);
-      box-shadow: inset -9px -12px 18px #22103622, 0 0 22px color-mix(in srgb, var(--color) 58%, transparent);
-      animation: balloon-arrive 3.1s cubic-bezier(.2,.65,.35,1) var(--delay) forwards;
-    }
-    .balloon::before { content: ""; position: absolute; left: 50%; bottom: -8px; transform: translateX(-50%); border: 7px solid transparent; border-top-color: var(--color); }
-    .balloon::after { content: ""; position: absolute; top: calc(100% + 5px); left: 50%; width: 1px; height: calc(var(--size) * 1.25); background: #fff9; transform-origin: top; animation: string-sway 1.3s ease-in-out infinite alternate; }
-    @keyframes balloon-arrive {
-      0% { opacity: 0; transform: translate3d(0, 22vh, 0) rotate(-8deg) scale(.72); }
-      12% { opacity: 1; }
-      72%, 100% { opacity: 1; transform: translate3d(var(--drift), -53vh, 0) rotate(5deg) scale(1); }
-    }
-    .balloon.is-covered { opacity: 0 !important; }
-    .celebration-layer.is-message-visible .balloon.is-covered { opacity: 0 !important; }
-    .balloon.is-hidden-for-letter { opacity: 0 !important; visibility: hidden; }
-    .celebration-layer.is-effects-paused .balloon,
-    .celebration-layer.is-effects-paused .balloon::after,
-    .celebration-layer.is-effects-paused .sparkle,
-    .celebration-layer.is-effects-paused .sparkle::before,
-    .celebration-layer.is-effects-paused .sparkle::after,
-    .celebration-layer.is-effects-paused .firework,
-    .celebration-layer.is-effects-paused .firework::before,
-    .celebration-layer.is-effects-paused .firework::after,
-    .celebration-layer.is-effects-paused .celebration-glow { animation-play-state: paused; }
-    @keyframes string-sway { from { transform: rotate(-8deg); } to { transform: rotate(8deg); } }
-    .celebration-glow {
-      position: absolute; inset: 0; opacity: 0;
-      background: radial-gradient(ellipse at center, #fff4ff35, transparent 65%);
-      animation: celebration-pulse 1.1s ease-in-out 5 alternate;
-    }
-    @keyframes celebration-pulse { to { opacity: 1; } }
-    .sparkle {
-      position: absolute; left: var(--left); top: var(--top); width: 8px; height: 8px;
-      border-radius: 50%; background: #fffef0; box-shadow: 0 0 20px 8px #ffd9ff, 0 0 48px 16px #ff8bd9aa;
-      animation: sparkle-burst 1.6s ease-out var(--delay) both;
-    }
-    .sparkle::before, .sparkle::after {
-      content: ""; position: absolute; left: 50%; top: 50%; width: var(--ray); height: 2px;
-      background: linear-gradient(90deg, transparent, #fff8d9, #fff, #ffd9ff, transparent);
-      transform: translate(-50%, -50%) rotate(var(--angle)) scaleX(.05); transform-origin: center;
-      filter: drop-shadow(0 0 7px #fff2b8); animation: sparkle-ray 1.25s cubic-bezier(.12,.7,.25,1) var(--delay) both;
-    }
-    .sparkle::after { transform: translate(-50%, -50%) rotate(calc(var(--angle) + 90deg)) scaleX(.05); }
-    @keyframes sparkle-burst {
-      0% { opacity: 0; transform: scale(.08); }
-      12% { opacity: 1; transform: scale(1.8); }
-      40% { opacity: 1; transform: scale(1); }
-      100% { opacity: 0; transform: scale(.18) translateY(-42px); }
-    }
-    @keyframes sparkle-ray {
-      0%, 10% { opacity: 0; transform: translate(-50%, -50%) rotate(var(--angle)) scaleX(.03); }
-      26% { opacity: 1; transform: translate(-50%, -50%) rotate(var(--angle)) scaleX(1); }
-      100% { opacity: 0; transform: translate(-50%, -50%) rotate(var(--angle)) scaleX(.22); }
-    }
-    .firework {
-      position: absolute; left: var(--left); top: var(--top); width: 8px; height: 8px;
-      border-radius: 50%; background: #fffce6; box-shadow: 0 0 16px 7px #fff2a9, 0 0 48px 18px #ff8bd9aa;
-      animation: firework-pop 1.8s ease-out var(--delay) both;
-    }
-    .firework::before {
-      content: ""; position: absolute; inset: 0; border-radius: inherit;
-      box-shadow: 0 -54px 0 -2px #ffe7a7, 0 54px 0 -2px #ffc5f0,
-        54px 0 0 -2px #baf8ff, -54px 0 0 -2px #fff0a3,
-        38px 38px 0 -2px #ffb7d5, -38px -38px 0 -2px #d7b7ff,
-        38px -38px 0 -2px #baf8ff, -38px 38px 0 -2px #ffda9e;
-      animation: firework-rays 1.8s cubic-bezier(.12,.7,.25,1) var(--delay) both;
-    }
-    .firework::after {
-      content: ""; position: absolute; inset: 0; border-radius: inherit;
-      box-shadow: 0 -30px 0 -2px #ff9fcf, 0 30px 0 -2px #d7b7ff,
-        30px 0 0 -2px #fff0a3, -30px 0 0 -2px #baf8ff,
-        21px 21px 0 -2px #fff, -21px -21px 0 -2px #ffda9e,
-        21px -21px 0 -2px #ffb7d5, -21px 21px 0 -2px #d7b7ff;
-      animation: firework-rays 1.6s cubic-bezier(.12,.7,.25,1) calc(var(--delay) + .08s) both reverse;
-    }
-    @keyframes firework-pop { 0% { opacity: 0; transform: scale(.1); } 15% { opacity: 1; } 30% { transform: scale(1.5); } 100% { opacity: 0; transform: scale(2.2); } }
-    @keyframes firework-rays { 0% { opacity: 0; transform: scale(.08) rotate(0); } 18% { opacity: 1; } 100% { opacity: 0; transform: scale(1.5) rotate(22deg); } }
-    main.is-celebrating { animation: none; }
-    .launch-text { animation: text-rocket 3.6s cubic-bezier(.3,.02,.7,.15) forwards; }
-    .launch-text::after {
-      content: ""; position: absolute; left: 22%; right: 22%; top: calc(100% + 5px); height: 150px;
-      background: linear-gradient(to bottom, #fff9c9, #ffae65aa 35%, transparent);
-      filter: blur(14px); transform: scaleX(.55); transform-origin: top;
-      animation: thruster 3.6s ease-in forwards;
-    }
-    .launch-text::before {
-      content: ""; position: absolute; left: 38%; right: 38%; top: calc(100% - 3px); height: 52px;
-      border-radius: 50%; background: #fff4ba; filter: blur(17px);
-      animation: ignition-flash 3.6s ease-out forwards;
-    }
-    @keyframes text-rocket {
-      0% { opacity: 1; transform: translateY(0) rotate(0) scale(1); }
-      14% { transform: translateY(1vh) rotate(1deg) scale(1.015); }
-      30% { transform: translateY(-5vh) rotate(-1.5deg) scale(1.02); }
-      58% { transform: translateY(-32vh) rotate(1deg) scale(1.035); }
-      100% { opacity: 0; transform: translateY(-155vh) rotate(-5deg) scale(.88); }
-    }
-    @keyframes thruster {
-      0% { opacity: 0; transform: scaleX(.2) scaleY(.2); }
-      12% { opacity: 1; transform: scaleX(.85) scaleY(.85); }
-      45% { opacity: .8; transform: scaleX(.45) scaleY(1.35); }
-      100% { opacity: 0; transform: scaleX(.18) scaleY(2.1); }
-    }
-    @keyframes ignition-flash {
-      0%, 8% { opacity: 0; transform: scale(.3); }
-      16% { opacity: 1; transform: scale(1.3); }
-      100% { opacity: 0; transform: scale(.45); }
+      display: none;
     }
     .birthday-message {
-      position: fixed; z-index: 7; left: 50%; top: 50%; width: min(760px, calc(100% - 40px));
-      display: block; padding: clamp(20px, 3.8vw, 34px); box-sizing: border-box;
-      color: #fff7ff; text-align: center; pointer-events: none;
-      font: 700 clamp(1.8rem, 5.2vw, 3.6rem)/1.15 Georgia, "Times New Roman", serif;
-      letter-spacing: -.025em; text-shadow: 0 4px 24px #170921dd, 0 0 20px #ffccf0;
-      border: 1px solid #ffffff55; border-radius: 26px;
-      background: linear-gradient(135deg, #ffffff25, #ffffff09);
-      box-shadow: inset 0 1px #ffffff55, 0 20px 56px #17092144;
-      backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-      opacity: 0; transform: translate(-50%, -160vh) scale(.72) rotate(-5deg);
-    }
-    .birthday-message.is-arriving { animation: birthday-arrive 1.55s cubic-bezier(.16,.82,.22,1) forwards; }
-    .birthday-message.is-resting {
-      position: fixed; z-index: 7; left: 50%; top: 50%; width: min(760px, calc(100% - 40px));
-      margin: 0; opacity: 1; transform: translate(-50%, -50%); pointer-events: none;
-      font: 700 clamp(1.8rem, 5.2vw, 3.6rem)/1.15 Georgia, "Times New Roman", serif;
-      letter-spacing: -.025em; color: #fff7ff; text-align: center;
-      text-shadow: 0 4px 24px #170921dd, 0 0 20px #ffccf0;
-      border: 1px solid #ffffff55; border-radius: 26px;
-      background: linear-gradient(135deg, #ffffff25, #ffffff09);
-      box-shadow: inset 0 1px #ffffff55, 0 20px 56px #17092144;
-      padding: clamp(20px, 3.8vw, 34px);
-      backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
-      animation: none;
-    }
-    @keyframes birthday-arrive {
-      0% { opacity: 0; transform: translate(-50%, -160vh) scale(.72) rotate(-5deg); }
-      68% { opacity: 1; transform: translate(-50%, -43%) scale(1.04) rotate(1.2deg); }
-      84% { transform: translate(-50%, -52%) scale(.985) rotate(-.5deg); }
-      100% { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(0); }
+      display: none;
     }
     main {
       width: min(760px, 100%); text-align: center; padding: clamp(28px, 6vw, 54px);
@@ -230,7 +90,7 @@
       font: 700 clamp(1.45rem, 4.3vw, 2.35rem)/1.2 "Avenir Next", Avenir, "Segoe UI", sans-serif;
       letter-spacing: .015em; text-shadow: 0 3px 24px #170921bb;
     }
-    .timer { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 0 auto; max-width: 680px; }
+    .timer { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin: 0 auto; max-width: 760px; }
     .unit {
       padding: clamp(17px, 4vw, 30px) 8px; border: 1px solid #ffffff55;
       border-radius: 20px; background: linear-gradient(145deg, #ffffff32, #ffffff12);
@@ -250,14 +110,31 @@
     button:active { transform: translateY(0) scale(.97); }
     button:focus-visible { outline: 2px solid #fff; outline-offset: 4px; }
     .test-controls { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
-    .letter-button { font-size: .78rem; }
-    .letter-button { background: linear-gradient(135deg, #ffc4e7aa, #cdb5ffaa); color: #2b1740; border-color: #ffffff99; }
+    .letter-button, .video-button { font-size: .78rem; }
+    .letter-button, .video-button { background: linear-gradient(135deg, #ffc4e7aa, #cdb5ffaa); color: #2b1740; border-color: #ffffff99; }
+    .video-button { background: linear-gradient(135deg, #d0c7ffcc, #bfe8ffcc); }
     footer { margin-top: 48px; color: #f0dff5; font-size: .73rem; text-shadow: 0 2px 12px #160a2b; }
-    .letter-overlay {
+    .letter-overlay, .video-overlay {
       position: fixed; inset: 0; z-index: 10; display: grid; place-items: center;
       padding: 16px; background: #160d27a8; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
     }
-    .letter-overlay[hidden], .letter-button[hidden] { display: none; }
+    .letter-overlay[hidden], .video-overlay[hidden], .letter-button[hidden], .video-button[hidden] { display: none; }
+    .letter-button, .video-button { display: inline-flex; align-items: center; justify-content: center; margin-top: 16px; }
+
+    .video-shell {
+      position: relative; width: min(95vw, 1500px); max-height: 92vh; overflow: hidden;
+      padding: 18px 18px 12px; border: 1px solid #ffffffaa; border-radius: 28px;
+      background: linear-gradient(145deg, #fffdf7ef, #fff9f5e6); box-shadow: 0 3px 6px #17132920, 0 28px 80px #17132988;
+    }
+    .video-frame {
+      display: block; width: 100%; aspect-ratio: 16 / 9; border: 0; border-radius: 18px; background: #1c162b;
+    }
+    .video-close-button {
+      position: absolute; right: 18px; top: 12px; z-index: 11; width: 42px; height: 42px; display: grid; place-items: center;
+      border: 0; border-radius: 50%; background: rgba(34, 18, 47, 0.78); color: #fff; font-size: 1.1rem;
+      box-shadow: none; backdrop-filter: none; padding: 0;
+    }
+
     .letter {
       position: relative; width: min(760px, 100%); max-height: 88vh; overflow-y: auto;
       padding: clamp(30px, 6vw, 56px) clamp(30px, 7vw, 72px) 120px;
@@ -317,20 +194,18 @@
   <div class="background-scene" aria-hidden="true"></div>
   <div class="background-scene" aria-hidden="true"></div>
   <div class="background-scene" aria-hidden="true"></div>
-  <div class="celebration-layer" id="celebration-layer" aria-hidden="true" hidden></div>
-  <div class="birthday-message" id="birthday-message" aria-live="polite"><span class="birthday-copy">Happy Birthday!<br>It’s your 18th Birthday!</span></div>
   <main>
-    <div class="eyebrow">A little something for someone special</div>
-    <h1>Almost time for<br><span>your big day.</span></h1>
-    <p class="intro">Your 18th birthday is in:</p>
-    <section class="timer" aria-label="Countdown to your birthday">
-      <div class="unit"><span class="number" id="days">—</span><span class="label">Days</span></div>
-      <div class="unit"><span class="number" id="hours">—</span><span class="label">Hours</span></div>
-      <div class="unit"><span class="number" id="minutes">—</span><span class="label">Minutes</span></div>
-      <div class="unit"><span class="number" id="seconds">—</span><span class="label">Seconds</span></div>
+    <section class="timer" aria-label="Time since your 18th birthday">
+      <div class="unit"><span class="number" id="years">00</span><span class="label">Years</span></div>
+      <div class="unit"><span class="number" id="days">00</span><span class="label">Days</span></div>
+      <div class="unit"><span class="number" id="hours">00</span><span class="label">Hours</span></div>
+      <div class="unit"><span class="number" id="minutes">00</span><span class="label">Minutes</span></div>
+      <div class="unit"><span class="number" id="seconds">00</span><span class="label">Seconds</span></div>
     </section>
+    <p class="intro">Since your 18th birthday</p>
     <div class="test-controls">
-      <button class="letter-button" id="letter-button" type="button" hidden>Read your letter 📜</button>
+      <button class="letter-button" id="letter-button" type="button">Read your letter 📜</button>
+      <button class="video-button" id="video-button" type="button">Memory Mode 🎬</button>
     </div>
     <footer>Made with love, just for you ♡</footer>
   </main>
@@ -341,114 +216,80 @@
       <button class="close-button" id="close-letter" type="button" aria-label="Close letter">Close</button>
     </section>
   </div>
+  <div class="video-overlay" id="video-overlay" hidden>
+    <div class="video-shell" role="dialog" aria-modal="true" aria-label="Video player">
+      <button class="video-close-button" id="close-video" type="button" aria-label="Close video">✕</button>
+      <iframe
+        id="video-frame"
+        class="video-frame"
+        src="https://drive.google.com/file/d/1RBUOjJ-QXZaUXdQD0lmBGq4i6QgRCzFV/preview"
+        allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+        allowfullscreen
+        title="Birthday video"
+      ></iframe>
+    </div>
+  </div>
   <script>
     // Birthday date in YYYY-MM-DD format; countdown uses midnight at UTC+02:00.
     const DEFAULT_BIRTHDAY = "2026-11-14";
     const birthdayAt = new Date(`${DEFAULT_BIRTHDAY}T00:00:00+02:00`).getTime();
-    const fields = ["days", "hours", "minutes", "seconds"].map(id => document.getElementById(id));
+    const fields = ["years", "days", "hours", "minutes", "seconds"].map(id => document.getElementById(id));
     const labels = [...document.querySelectorAll(".label")];
     const letterOverlay = document.querySelector("#letter-overlay");
+    const videoOverlay = document.querySelector("#video-overlay");
     const letterButton = document.querySelector("#letter-button");
+    const videoButton = document.querySelector("#video-button");
     const closeLetterButton = document.querySelector("#close-letter");
-    const celebrationLayer = document.querySelector("#celebration-layer");
-    const birthdayMessage = document.querySelector("#birthday-message");
+    const closeVideoButton = document.querySelector("#close-video");
     const main = document.querySelector("main");
-    let celebrationStarted = false;
-    let countdownCompleted = false;
+    let countdownCompleted = true;
+    fields.forEach(field => field.textContent = "00");
 
     function openLetter() {
-      celebrationLayer.querySelectorAll(".balloon").forEach(balloon => balloon.classList.add("is-hidden-for-letter"));
       letterOverlay.hidden = false;
       letterOverlay.classList.remove("is-opening");
       void letterOverlay.offsetWidth;
       letterOverlay.classList.add("is-opening");
-      celebrationLayer.classList.add("is-effects-paused");
       closeLetterButton.focus();
     }
-    function addCelebrationEffects() {
-      const colors = ["#ff82bd", "#a78bfa", "#77ddff", "#ffd166", "#ff9f7a", "#9be7c4"];
-      const mainRect = main.getBoundingClientRect();
-      for (let i = 0; i < 30; i++) {
-        const balloon = document.createElement("span");
-        balloon.className = "balloon";
-        const size = 38 + Math.random() * 34;
-        const left = 3 + (i * 37 + Math.random() * 12) % 94;
-        const maxLeft = Math.max(3, 97 - size / window.innerWidth * 100);
-        const safeLeft = Math.min(left, maxLeft);
-        const centerCovered = safeLeft > (mainRect.left / window.innerWidth * 100 - 8) && safeLeft < (mainRect.right / window.innerWidth * 100 + 8);
-        balloon.style.setProperty("--left", `${safeLeft}%`);
-        balloon.style.setProperty("--size", `${size}px`);
-        balloon.style.setProperty("--color", colors[i % colors.length]);
-        balloon.style.setProperty("--delay", `${Math.random() * .55}s`);
-        balloon.style.setProperty("--drift", `${(Math.random() - .5) * 160}px`);
-        if (centerCovered) balloon.classList.add("is-covered");
-        celebrationLayer.appendChild(balloon);
-      }
-      for (let i = 0; i < 110; i++) {
-        const sparkle = document.createElement("span");
-        sparkle.className = "sparkle";
-        sparkle.style.setProperty("--left", `${Math.random() * 100}%`);
-        sparkle.style.setProperty("--top", `${Math.random() * 100}%`);
-        sparkle.style.setProperty("--ray", `${34 + Math.random() * 76}px`);
-        sparkle.style.setProperty("--angle", `${Math.random() * 180}deg`);
-        sparkle.style.setProperty("--delay", `${Math.random() * 18}s`);
-        celebrationLayer.appendChild(sparkle);
-      }
-      for (let i = 0; i < 18; i++) {
-        const firework = document.createElement("span");
-        firework.className = "firework";
-        firework.style.setProperty("--left", `${6 + Math.random() * 88}%`);
-        firework.style.setProperty("--top", `${4 + Math.random() * 62}%`);
-        firework.style.setProperty("--delay", `${Math.random() * 18}s`);
-        celebrationLayer.appendChild(firework);
-      }
-    }
-    function startCelebration() {
-      if (celebrationStarted) return;
-      celebrationStarted = true;
-      celebrationLayer.hidden = false;
-      celebrationLayer.innerHTML = '<div class="celebration-glow"></div>';
-      addCelebrationEffects();
-      main.classList.add("is-celebrating");
-      birthdayMessage.dataset.originalParent = "body";
-      const launchTargets = [main.querySelector(".eyebrow"), main.querySelector("h1"), main.querySelector(".intro")];
-      launchTargets.forEach((element, index) => {
-        element.classList.add("launch-text");
-        element.style.position = "relative";
-        element.style.animationDelay = `${index * 100}ms`;
-      });
 
-      // Balloons settle at mid-screen and remain there; center balloons stay behind the text.
-      window.setTimeout(() => {
-        birthdayMessage.classList.add("is-arriving");
-      }, 3800);
-      window.setTimeout(() => {
-        birthdayMessage.classList.remove("is-arriving");
-        birthdayMessage.classList.add("is-resting");
-        celebrationLayer.classList.add("is-message-visible");
-        window.setTimeout(openLetter, 14000);
-      }, 6000);
+    function openVideo() {
+      videoOverlay.hidden = false;
+      closeVideoButton.focus();
     }
+
     function finishCountdown() {
       if (countdownCompleted) return;
       countdownCompleted = true;
       fields.forEach(field => field.textContent = "00");
       labels.forEach(label => label.textContent = label.textContent.replace(" ago", ""));
-      startCelebration();
     }
 
     closeLetterButton.addEventListener("click", () => {
       letterOverlay.hidden = true;
-      letterButton.hidden = false;
-      celebrationLayer.hidden = false;
-      celebrationLayer.classList.remove("is-effects-paused", "is-resting", "is-message-visible");
-      celebrationLayer.querySelectorAll(".balloon").forEach(balloon => balloon.classList.remove("is-hidden-for-letter"));
-      birthdayMessage.style.top = `calc(50% - ${Math.round(main.getBoundingClientRect().height * 0.16)}px)`;
       letterButton.focus();
     });
+    closeVideoButton.addEventListener("click", () => {
+      videoOverlay.hidden = true;
+      videoButton.focus();
+    });
     letterButton.addEventListener("click", openLetter);
+    videoButton.addEventListener("click", openVideo);
+    letterOverlay.addEventListener("click", event => {
+      if (event.target === letterOverlay) closeLetterButton.click();
+    });
+    videoOverlay.addEventListener("click", event => {
+      if (event.target === videoOverlay) closeVideoButton.click();
+    });
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") {
+        if (!letterOverlay.hidden) closeLetterButton.click();
+        else if (!videoOverlay.hidden) closeVideoButton.click();
+      }
+    });
     document.addEventListener("click", event => {
-      if (main.contains(event.target) || letterOverlay.contains(event.target)) return;
+      if (event.target.closest("button") || event.target.closest(".unit") || event.target.closest(".number")) return;
+      if (letterOverlay.contains(event.target) || videoOverlay.contains(event.target)) return;
       const kiss = document.createElement("span");
       kiss.className = "kiss-pop";
       kiss.textContent = "😘";
@@ -457,29 +298,17 @@
       document.body.appendChild(kiss);
       window.setTimeout(() => kiss.remove(), 2000);
     });
-    letterOverlay.addEventListener("click", event => {
-      if (event.target === letterOverlay) closeLetterButton.click();
-    });
-    document.addEventListener("keydown", event => {
-      if (event.key === "Escape" && !letterOverlay.hidden) closeLetterButton.click();
-    });
 
     function render() {
-      if (countdownCompleted) return;
-      const remaining = birthdayAt - Date.now();
-      if (!Number.isFinite(birthdayAt)) return;
-      if (remaining <= 0) {
-        if (!countdownCompleted) finishCountdown();
-        return;
-      }
-      labels.forEach(label => label.textContent = label.textContent.replace(" ago", ""));
-      const totalSeconds = Math.floor(remaining / 1000);
-      const values = [
-        Math.floor(totalSeconds / 86400),
-        Math.floor(totalSeconds / 3600) % 24,
-        Math.floor(totalSeconds / 60) % 60,
-        totalSeconds % 60
-      ];
+      const elapsed = Math.max(0, Date.now() - birthdayAt);
+      const totalSeconds = Math.floor(elapsed / 1000);
+      const years = Math.floor(totalSeconds / 31557600);
+      const days = Math.floor((totalSeconds % 31557600) / 86400);
+      const hours = Math.floor((totalSeconds % 86400) / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+
+      const values = [years, days, hours, minutes, seconds];
       fields.forEach((field, index) => field.textContent = String(values[index]).padStart(2, "0"));
     }
     render();
